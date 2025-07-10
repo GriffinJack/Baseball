@@ -1,13 +1,14 @@
 import pandas as pd
 import pybaseball as pyball
 import matplotlib.pyplot as plt
+from PIL.ImageChops import constant
 from matplotlib.patches import Patch,Rectangle
 import seaborn as sns
 import pbp_data_prep as pbp
 from constants import pitch_colors
 
 
-def plot_pitchDist(data, count):
+def plot_pitchDist(data, count = "All"):
     data = pbp.count_filter(pbp_data=data, counts=count)
     batter_splits = [pbp.pitch_sums(data, stand='L'), pbp.pitch_sums(data, stand='R')]
 
@@ -66,13 +67,39 @@ def plot_pitchDist(data, count):
     fig.suptitle(main_title, fontsize=24, fontweight='bold')
     plt.show()
 
+def plot_velo(data):
+    plt.figure(figsize=(10, 6))
+    last, first = data.player_name.iloc[0].split(', ')
+    #order pitches by avg velo
+    order = data.groupby('pitch_name')['release_speed'].mean().sort_values(ascending=False).index.tolist()
+
+    sns.violinplot(
+        data = data,
+        y = 'pitch_name',
+        x = 'release_speed',
+        hue = 'pitch_name',
+        palette = pitch_colors,
+        legend = False,
+        order = order,
+        cut = 0,
+        density_norm='area'
+    )
+
+    plt.title(f'{first} {last} - Velocity Distribution', fontsize=20, fontweight='bold' )
+    plt.ylabel('Pitch Type')
+    plt.xlabel('MPH')
+    plt.grid(axis='y', alpha=0.3)
+
+    plt.show()
+
+
 if __name__ == '__main__':
 
-    first = "Jordan"
-    last = "Romano"
+    first = "Paul"
+    last = "Skenes"
 
     start = '2025-03-20'
     end = '2025-9-30'
 
     pbp_data = pbp.get_pbp(first, last, start, end)
-    plot_pitchDist(pbp_data, "Ahead")
+    plot_pitchDist(pbp_data, "Behind")
