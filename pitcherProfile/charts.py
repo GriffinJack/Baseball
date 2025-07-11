@@ -9,7 +9,7 @@ import pbp_data_prep as pbp
 from constants import pitch_colors
 
 
-def plot_pitchDist(data, count = "All"):
+def pitch_dist(data, count = "All"):
     data = pbp.count_filter(pbp_data=data, counts=count)
     batter_splits = [pbp.pitch_sums(data, stand='L'), pbp.pitch_sums(data, stand='R')]
 
@@ -66,9 +66,11 @@ def plot_pitchDist(data, count = "All"):
 
     main_title = f'{first} {last} - Pitch Usage vs LHB & RHB'
     fig.suptitle(main_title, fontsize=24, fontweight='bold')
-    plt.show()
 
-def plot_velo(data):
+    plt.savefig("static/images/pitch_dist.png", dpi=100, bbox_inches="tight")
+    plt.close()
+
+def velo(data):
     plt.figure(figsize=(10, 6))
     last, first = data.player_name.iloc[0].split(', ')
     #order pitches by avg velo
@@ -91,7 +93,8 @@ def plot_velo(data):
     plt.xlabel('MPH')
     plt.grid(axis='y', alpha=0.3)
 
-    plt.show()
+    plt.savefig("static/images/velo.png", dpi=100, bbox_inches="tight")
+    plt.close()
 
 def movement_profile(data):
     plt.rcParams['font.family'] = 'Arial'
@@ -141,7 +144,8 @@ def movement_profile(data):
     plt.gca().set_aspect('equal', adjustable='box')
     ax.get_legend().remove()
 
-    plt.show()
+    plt.savefig("static/images/movement_profile.png", dpi=100, bbox_inches="tight")
+    plt.close()
 
 
 def pitch_sample(data, sample_size = 100):
@@ -172,7 +176,8 @@ def pitch_sample(data, sample_size = 100):
     ax.get_yaxis().set_visible(False)
     ax.get_legend().remove()
 
-    plt.show()
+    plt.savefig("static/images/pitch_sample.png", dpi=100, bbox_inches="tight")
+    plt.close()
 
 
 
@@ -185,4 +190,7 @@ if __name__ == '__main__':
     end = '2025-9-30'
 
     pbp_data = pbp.get_pbp(first, last, start, end)
+    pitch_dist(pbp_data)
+    velo(pbp_data)
+    movement_profile(pbp_data)
     pitch_sample(pbp_data)
