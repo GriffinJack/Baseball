@@ -149,11 +149,23 @@ def movement_profile(data):
 
 
 def pitch_sample(data, sample_size = 100):
+
     sample_data = data.sample(n=sample_size, random_state=42)
 
     fig, ax = plt.subplots(figsize = (6,6))
 
-    strike_zone = Rectangle((-0.95, 1.5), 1.9, 2.0, linewidth=1.5, edgecolor='black', facecolor='none')
+    avg_sz_top = data['sz_top'].mean()
+    avg_sz_bot = data['sz_bot'].mean()
+
+    strike_zone = Rectangle(
+        (-0.97, 1.5),
+        1.94,
+        2.0,
+        linewidth=1.5,
+        edgecolor='black',
+        facecolor='none'
+    )
+
 
     sns.scatterplot(
         data=sample_data,
@@ -161,7 +173,7 @@ def pitch_sample(data, sample_size = 100):
         y='plate_z',
         hue='pitch_name',
         palette=pitch_colors,
-        s=50,
+        s=100,
         edgecolor='black'
     )
 
@@ -169,8 +181,8 @@ def pitch_sample(data, sample_size = 100):
     plt.title(f"{first} {last} - {sample_size} Pitch Sample", fontsize=20, fontweight='bold')
 
     ax.add_patch(strike_zone)
-    ax.set_xlim(-4.5, 4.5)
-    ax.set_ylim(-2, 6.25)
+    ax.set_xlim(-3, 3)
+    ax.set_ylim(-1, 5)
     ax.set_aspect('equal')
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)

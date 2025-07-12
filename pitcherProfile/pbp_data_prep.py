@@ -41,9 +41,7 @@ def count_filter(pbp_data, counts):
     if counts == 'All':
         return pbp_data
     elif counts in count_filters:
-        data = pbp_data[pbp_data['count'].isin(count_filters[counts])]
-        print(data['count'].value_counts())
-        return data
+        return pbp_data[pbp_data['count'].isin(count_filters[counts])]
     else:
         return pbp_data[pbp_data['count'] == counts]
 
