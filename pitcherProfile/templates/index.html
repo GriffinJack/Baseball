@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pitcher Profile</title>
+</head>
+<body>
+    <h1>Pitcher Profile Chart</h1>
+
+    <form method="post">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required>
+
+        <label for="count_filter">Count Filter:</label>
+        <select name="count_filter" id="count_filter">
+            <option value="All">All</option>
+            <option value="0-0">0-0</option>
+            <option value="0-2">0-2</option>
+            <option value="1-2">1-2</option>
+            <option value="2-2">2-2</option>
+            <option value="3-2">3-2</option>
+            <option value="Ahead">Ahead</option>
+            <option value="Behind">Behind</option>
+            <option value="Even">Even</option>
+        </select>
+
+        <button type="submit">Generate Chart</button>
+    </form>
+
+    {% if chart_path %}
+        <h2>Chart for: {{ selected_count or "All Counts" }}</h2>
+        <img src="{{ chart_path }}" alt="Pitch Distribution Chart" style="max-width: 90%;">
+    {% endif %}
+</body>
+</html>

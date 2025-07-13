@@ -6,7 +6,8 @@ import seaborn as sns
 import pbp_data_prep as pbp
 from constants import pitch_colors
 import os
-
+import matplotlib
+matplotlib.use("Agg")
 
 class Pitcher:
 
@@ -18,6 +19,7 @@ class Pitcher:
         self.data = self.load_data()
         self.filtered_data = None
         self.active_filter = None
+        self.chart_path = {}
 
     def load_data(self):
         filename = f"data/{self.last}_{self.first}_{self.start}_{self.end}.csv"
@@ -58,7 +60,7 @@ class Pitcher:
             self.filtered_data =  self.data[self.data['count'] == counts]
         return self
 
-    def pitch_dist(self, use_filter = False):
+    def pitch_dist(self,use_filter = False):
         if use_filter and self.filtered_data is not None:
             data = self.filtered_data
         else:
@@ -119,7 +121,9 @@ class Pitcher:
         main_title = f'{self.first} {self.last} - Pitch Usage vs LHB & RHB'
         fig.suptitle(main_title, fontsize=24, fontweight='bold')
 
-        plt.savefig("static/images/pitch_dist.png", dpi=100, bbox_inches="tight")
+        file_path = f"static/images/{self.first}_{self.last}_pitch_dist.png"
+        self.chart_path["pitch_dist"] = file_path
+        plt.savefig(file_path, dpi=100, bbox_inches="tight")
         plt.close()
 
     def velo(self, use_filter = False):
